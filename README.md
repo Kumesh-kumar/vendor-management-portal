@@ -1,16 +1,87 @@
-# React + Vite
+# Vendor Management Portal - ERP System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive **Vendor Management Portal** built as a Web Developer Assignment. It streamlines vendor onboarding, purchase orders, invoices, shipments, and performance tracking for enterprises.
 
-Currently, two official plugins are available:
+## ✨ Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Admin Dashboard
+- Vendor Onboarding & Approval System (Pending → Approved/Rejected)
+- Vendor Management (Search, Filter, Status Management)
+- Product Catalog with Barcode Generation
+- Purchase Order Management
+- Invoice Approval & Rejection
+- Performance Analytics with Charts
+- Responsive Admin Interface
 
-## React Compiler
+### Vendor Portal
+- Vendor Registration (Status: Pending by default)
+- Vendor Dashboard
+- Purchase Orders View
+- Shipment Tracking
+- Invoice Submission
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### General Features
+- Role-based Authentication (Admin & Vendor)
+- Pending Vendor Approval Workflow
+- Fully Responsive Design (Mobile, Tablet, Desktop)
+- Barcode Generation using `react-barcode`
+- Mock Backend using `json-server`
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend**: React 19, Vite
+- **Styling**: Tailwind CSS v4
+- **State Management**: Redux Toolkit
+- **Routing**: React Router v7
+- **Charts**: Recharts
+- **HTTP Client**: Axios
+- **Mock API**: json-server
+- **Notifications**: React Hot Toast
+
+## 🚀 Setup Instructions
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Kumesh-kumar/vendor-management-portal.git
+cd vendor-management-portal
+
+
+2. Install Dependencies
+Bash: npm install
+
+3. Start the Mock Backend (json-server)
+Open Terminal 1 and run:
+Bash: npm run server
+
+Backend will run on http://localhost:5000
+
+4. Start the Frontend
+Open Terminal 2 and run:
+Bash: npm run dev
+Frontend will run on http://localhost:5173
+
+
+5.Alternative: Run Both at Once
+Bash: npm run both
+
+6.Make sure package.json has these scripts:JSON
+"scripts": {
+  "dev": "vite",
+  "server": "json-server --watch db.json --port 5000",
+  "both": "concurrently \"npm run server\" \"npm run dev\""
+}
+
+
+7.Project Structure
+textsrc/
+├── components/          # Reusable UI components
+├── layouts/             # AdminLayout & VendorLayout
+├── pages/
+│   ├── admin/           # Dashboard, Vendor Management, etc.
+│   ├── vendor/          # Vendor features
+│   └── auth/            # Login & Register
+├── redux/               # Redux store & slices
+├── routes/              # Routing configuration
+└── assets/
+
+
