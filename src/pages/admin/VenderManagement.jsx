@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaPlus, FaEye, FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
+import { ApiEndpoints } from '../../api/ApiURLs';
 
 const VenderManagement = () => {
     const [vendors, setVendors] = useState([]);
@@ -13,7 +14,7 @@ const VenderManagement = () => {
     useEffect(() => {
         const fetchVendors = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/vendors');
+                const res = await axios.get(ApiEndpoints.fetchVendors);
                 setVendors(res.data || []);
             } catch (err) {
                 console.error("Error fetching vendors:", err);
@@ -84,15 +85,6 @@ const VenderManagement = () => {
                     />
                 </div>
 
-                <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="border border-gray-300 rounded-2xl px-5 py-3 focus:outline-none focus:border-green-500"
-                >
-                    <option value="All">All Status</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                </select>
             </div>
 
             {/* Responsive Content */}

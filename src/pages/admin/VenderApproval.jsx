@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { FaCheckCircle, FaTimesCircle, FaEye } from 'react-icons/fa';
+import { ApiEndpoints } from '../../api/ApiURLs';
 
 const VendorApproval = () => {
     const [pendingVendors, setPendingVendors] = useState([]);
@@ -11,7 +12,7 @@ const VendorApproval = () => {
 
     const loadPendingVendors = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/vendors');
+            const res = await axios.get(ApiEndpoints.fetchVendors);
             const pending = res.data.filter(v => v.status === 'Pending' || !v.status);
             setPendingVendors(pending);
         } catch (err) {
@@ -25,7 +26,7 @@ const VendorApproval = () => {
 
     const approveVendor = async (vendor) => {
         try {
-            await axios.patch(`http://localhost:5000/vendors/${vendor.id}`, {
+            await axios.patch(`${ApiEndpoints.fetchVendors}/${vendor.id}`, {
                 status: "Approved",
                 approvedDate: new Date().toISOString()
             });
@@ -45,7 +46,7 @@ const VendorApproval = () => {
         }
 
         try {
-            await axios.patch(`http://localhost:5000/vendors/${selectedVendor.id}`, {
+            await axios.patch(`${ApiEndpoints.fetchVendors}/${selectedVendor.id}`, {
                 status: "Rejected",
                 rejectedDate: new Date().toISOString(),
                 rejectReason

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaPlus } from 'react-icons/fa';
+import { ApiEndpoints } from '../../api/ApiURLs';
 
 const PurchaseOrders = () => {
     const [purchaseOrders, setPurchaseOrders] = useState([]);
@@ -10,12 +11,11 @@ const PurchaseOrders = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/purchaseOrders');
+                const res = await axios.get(ApiEndpoints.fetchOrders);
                 setPurchaseOrders(res.data);
                 setFilteredOrders(res.data);
             } catch (err) {
                 console.error("Error fetching purchase orders:", err);
-                // Sample Data
                 const sampleData = [
                     { id: 1, poNumber: "PO-1001", vendor: "Acme Corp", items: 15, amount: 15000, deliveryDate: "2026-05-15", status: "Active" },
                     { id: 2, poNumber: "PO-1002", vendor: "Global Supplies", items: 8, amount: 28500, deliveryDate: "2026-05-20", status: "Pending" },
@@ -38,23 +38,25 @@ const PurchaseOrders = () => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900">Purchase Orders</h1>
                     <p className="text-gray-600">Create and manage purchase orders</p>
                 </div>
-                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl flex items-center gap-2 font-medium transition">
+                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl flex items-center gap-2 font-medium transition w-full sm:w-auto justify-center">
                     <FaPlus /> Create PO
                 </button>
             </div>
 
-            {/* Table */}
-            <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+            {/* Desktop Table */}
+            <div className="hidden lg:block bg-white rounded-3xl shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full min-w-[900px]">
                         <thead className="bg-gray-50">
                             <tr>
                                 <th className="text-left p-6 font-semibold">PO NUMBER</th>
+                                <th className="text-left p-6 font-semibold">VENDOR</th>
                                 <th className="text-left p-6 font-semibold">ITEMS</th>
                                 <th className="text-left p-6 font-semibold">AMOUNT</th>
                                 <th className="text-left p-6 font-semibold">DELIVERY DATE</th>
@@ -66,6 +68,7 @@ const PurchaseOrders = () => {
                             {filteredOrders.map((order) => (
                                 <tr key={order.id} className="hover:bg-gray-50 transition-colors">
                                     <td className="p-6 font-medium text-gray-900">{order.poNumber}</td>
+                                    <td className="p-6">{order.vendor}</td>
                                     <td className="p-6">{order.items}</td>
                                     <td className="p-6 font-medium">₹{order.amount.toLocaleString()}</td>
                                     <td className="p-6">{order.deliveryDate}</td>
@@ -84,6 +87,42 @@ const PurchaseOrders = () => {
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            {/* Mobile Cards */}
+            <div className="lg:hidden space-y-4">
+                {filteredOrders.map((order) => (
+                    <div key={order.id} className="bg-white rounded-3xl shadow-sm p-6 space-y-4">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <p className="font-mono text-sm text-gray-500">{order.poNumber}</p>
+                                <h3 className="font-semibold text-lg mt-1">{order.vendor}</h3>
+                            </div>
+                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadge(order.status)}`}>
+                                {order.status}
+                            </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-y-4 text-sm">
+                            <div>
+                                <p className="text-gray-500">Items</p>
+                                <p className="font-medium">{order.items}</p>
+                            </div>
+                            <div>
+                                <p className="text-gray-500">Amount</p>
+                                <p className="font-medium">₹{order.amount.toLocaleString()}</p>
+                            </div>
+                            <div>
+                                <p className="text-gray-500">Delivery</p>
+                                <p className="font-medium">{order.deliveryDate}</p>
+                            </div>
+                        </div>
+
+                        <button className="w-full py-3 border border-gray-300 rounded-2xl text-green-600 hover:bg-gray-50 font-medium">
+                            View Details
+                        </button>
+                    </div>
+                ))}
             </div>
         </div>
     );

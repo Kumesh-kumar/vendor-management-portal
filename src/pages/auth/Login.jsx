@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../redux/authSlice';
 import axios from 'axios';
 import { setItem } from '../../utils/Storage';
+import { ApiEndpoints } from '../../api/ApiURLs';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -31,8 +32,8 @@ const Login = () => {
         try {
             // Fetch all vendors and admin
             const [vendorsRes, adminRes] = await Promise.all([
-                axios.get('http://localhost:5000/vendors'),
-                axios.get('http://localhost:5000/admin')
+                axios.get(ApiEndpoints.fetchVendors),
+                axios.get(ApiEndpoints.fetchAdmins)
             ]);
 
             const allUsers = [...vendorsRes.data, ...adminRes.data];

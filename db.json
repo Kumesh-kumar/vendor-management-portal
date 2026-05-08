@@ -45,6 +45,17 @@
       "submittedDate": "2026-05-08T08:35:18.810Z",
       "id": "peJdbzrp_OY",
       "approvedDate": "2026-05-08T08:35:41.259Z"
+    },
+    {
+      "role": "vendor",
+      "name": "TILES",
+      "email": "t@gmail.com",
+      "mobile": "989765854852",
+      "city": "chandigarh",
+      "password": "123",
+      "status": "Pending",
+      "submittedDate": "2026-05-08T15:35:21.859Z",
+      "id": "ri24q7tdJNw"
     }
   ],
   "products": [
@@ -142,10 +153,12 @@
       "poNumber": "PO-1002",
       "amount": 1400,
       "submittedDate": "2026-05-08T08:12:46.372Z",
-      "status": "Submitted",
+      "status": "Rejected",
       "notes": "this is just for example",
       "vendor": "Current Vendor",
-      "id": "DTO5uoPU060"
+      "id": "DTO5uoPU060",
+      "rejectedDate": "2026-05-08T15:43:35.442Z",
+      "rejectReason": "want to reject"
     },
     {
       "invoiceNumber": "INV-060602",
@@ -157,6 +170,17 @@
       "vendor": "Current Vendor",
       "id": "5mt8H_AOewY",
       "approvedDate": "2026-05-08T08:14:38.361Z"
+    },
+    {
+      "invoiceNumber": "INV-979235",
+      "poNumber": "PO-1002",
+      "amount": 2323,
+      "submittedDate": "2026-05-08T15:43:06.692Z",
+      "status": "Approved",
+      "notes": "fdafdg",
+      "vendor": "Current Vendor",
+      "id": "t3ETM9sFuo4",
+      "approvedDate": "2026-05-08T15:43:25.187Z"
     }
   ],
   "shipments": [
@@ -203,6 +227,17 @@
       "status": "Fulfilled",
       "vendor": "Global Traders",
       "description": "Printers and Scanners"
+    },
+    {
+      "id": "HxWC6FHfUhc",
+      "shipmentId": "SHP-5199",
+      "poNumber": "PO-1002",
+      "trackingNumber": "9855",
+      "courier": "DHL",
+      "dispatchDate": "1121-12-01",
+      "deliveryDate": "1212-12-01",
+      "status": "Pending",
+      "notes": ""
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

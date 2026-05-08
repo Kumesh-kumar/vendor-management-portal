@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import AppRoutes from './routes/AppRoutes'
 import Loading from './components/Loading'
-import "./app.css"
+import "./App.css"
 const App = () => {
   return (
     <Suspense fallback={<Loading />}>

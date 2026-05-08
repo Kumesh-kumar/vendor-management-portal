@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaTimes, FaCalendarAlt, FaDollarSign, FaBox } from 'react-icons/fa';
+import { ApiEndpoints } from '../../api/ApiURLs';
 
 const PurchaseOrders = () => {
     const [activeTab, setActiveTab] = useState('All');
@@ -13,7 +14,7 @@ const PurchaseOrders = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/purchaseOrders');
+                const res = await axios.get(ApiEndpoints.fetchOrders);
                 setPurchaseOrders(res.data);
                 setFilteredOrders(res.data);
             } catch (err) {

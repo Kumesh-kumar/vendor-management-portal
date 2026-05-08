@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
+import { ApiEndpoints } from '../../api/ApiURLs';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -52,7 +53,7 @@ const Register = () => {
                 submittedDate: new Date().toISOString()
             };
 
-            await axios.post('http://localhost:5000/vendors', newVendor);
+            await axios.post(ApiEndpoints.fetchVendors, newVendor);
 
             toast.success("Registration successful! Your account is pending admin approval.");
             navigate('/login', {

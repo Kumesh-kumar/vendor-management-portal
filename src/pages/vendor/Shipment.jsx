@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { FaPlus, FaTimes, FaTruck, FaCalendarAlt } from 'react-icons/fa';
+import { ApiEndpoints } from '../../api/ApiURLs';
 
 const Shipment = () => {
     const [shipments, setShipments] = useState([]);
@@ -25,7 +26,7 @@ const Shipment = () => {
     // Fetch shipments
     const fetchShipments = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/shipments');
+            const res = await axios.get(ApiEndpoints.fetchShipment);
             setShipments(res.data);
             setFilteredShipments(res.data);
         } catch (err) {
@@ -64,7 +65,7 @@ const Shipment = () => {
                 ...formData
             };
 
-            await axios.post('http://localhost:5000/shipments', newShipment);
+            await axios.post(ApiEndpoints.fetchShipment, newShipment);
 
             toast.success("Shipment created successfully!");
             setShowCreateModal(false);

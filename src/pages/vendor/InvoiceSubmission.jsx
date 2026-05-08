@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { FaPlus } from 'react-icons/fa';
+import { ApiEndpoints } from '../../api/ApiURLs';
 
 const InvoiceSubmission = () => {
     const [invoices, setInvoices] = useState([]);
@@ -23,7 +24,7 @@ const InvoiceSubmission = () => {
 
     const fetchInvoices = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/invoices');
+            const res = await axios.get(ApiEndpoints.fetchInvoices);
             setInvoices(res.data);
         } catch (err) {
             console.error(err);
@@ -32,7 +33,7 @@ const InvoiceSubmission = () => {
 
     const fetchPOs = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/purchaseOrders');
+            const res = await axios.get(ApiEndpoints.fetchOrders);
             setPurchaseOrders(res.data);
         } catch (err) {
             console.error(err);
@@ -62,7 +63,7 @@ const InvoiceSubmission = () => {
                 vendor: "Current Vendor"
             };
 
-            await axios.post('http://localhost:5000/invoices', newInvoice);
+            await axios.post(ApiEndpoints.fetchInvoices, newInvoice);
 
             toast.success("Invoice submitted successfully for admin approval!");
             setShowCreateModal(false);
@@ -117,8 +118,8 @@ const InvoiceSubmission = () => {
                                     <td className="p-5">{new Date(invoice.submittedDate).toLocaleDateString()}</td>
                                     <td className="p-5">
                                         <span className={`px-4 py-1 rounded-full text-sm ${invoice.status === 'Approved' ? 'bg-green-100 text-green-700' :
-                                                invoice.status === 'Rejected' ? 'bg-red-100 text-red-700' :
-                                                    'bg-yellow-100 text-yellow-700'
+                                            invoice.status === 'Rejected' ? 'bg-red-100 text-red-700' :
+                                                'bg-yellow-100 text-yellow-700'
                                             }`}>
                                             {invoice.status || 'Submitted'}
                                         </span>
@@ -139,8 +140,8 @@ const InvoiceSubmission = () => {
                                     <p className="font-semibold text-lg">{invoice.invoiceNumber}</p>
                                 </div>
                                 <span className={`px-4 py-1 rounded-full text-sm ${invoice.status === 'Approved' ? 'bg-green-100 text-green-700' :
-                                        invoice.status === 'Rejected' ? 'bg-red-100 text-red-700' :
-                                            'bg-yellow-100 text-yellow-700'
+                                    invoice.status === 'Rejected' ? 'bg-red-100 text-red-700' :
+                                        'bg-yellow-100 text-yellow-700'
                                     }`}>
                                     {invoice.status || 'Submitted'}
                                 </span>

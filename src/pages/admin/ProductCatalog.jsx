@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaPlus, FaBarcode, FaEye } from 'react-icons/fa';
 import Barcode from 'react-barcode';
+import { ApiEndpoints } from '../../api/ApiURLs';
 
 const ProductCatalog = () => {
     const [products, setProducts] = useState([]);
@@ -13,7 +14,7 @@ const ProductCatalog = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/products');
+                const res = await axios.get(ApiEndpoints.fetchProducts);
                 const data = res.data || [];
                 setProducts(data);
                 setFilteredProducts(data);
@@ -60,25 +61,28 @@ const ProductCatalog = () => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900">Product Catalog</h1>
                     <p className="text-gray-600">Manage products and generate barcodes</p>
                 </div>
-                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl flex items-center gap-2 font-medium">
+                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl flex items-center gap-2 font-medium w-full sm:w-auto justify-center">
                     <FaPlus /> Add Product
                 </button>
             </div>
 
+            {/* Search */}
             <input
                 type="text"
                 placeholder="Search products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full max-w-md pl-5 py-3 border border-gray-300 rounded-2xl focus:border-green-500"
+                className="w-full max-w-md pl-5 py-3 border border-gray-300 rounded-2xl focus:border-green-500 focus:outline-none"
             />
 
-            <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+            {/* Desktop Table - Hidden on mobile */}
+            <div className="hidden lg:block bg-white rounded-3xl shadow-sm overflow-hidden">
                 <table className="w-full min-w-[900px]">
                     <thead className="bg-gray-50">
                         <tr>
@@ -116,9 +120,44 @@ const ProductCatalog = () => {
                 </table>
             </div>
 
+            {/* Mobile Cards - Hidden on large screens */}
+            <div className="lg:hidden space-y-4">
+                {filteredProducts.map(product => (
+                    <div key={product.id} className="bg-white rounded-3xl shadow-sm p-6 space-y-4">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h3 className="font-semibold text-lg">{product.name}</h3>
+                                <p className="font-mono text-sm text-gray-500">{product.sku}</p>
+                            </div>
+                            <span className={`px-3 py-1 rounded-full text-sm ${getStockBadge(product.stockStatus)}`}>
+                                {product.stockStatus}
+                            </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p className="text-gray-500">Category</p>
+                                <p className="font-medium">{product.category}</p>
+                            </div>
+                            <div>
+                                <p className="text-gray-500">Price</p>
+                                <p className="font-medium">₹{Number(product.price).toLocaleString()}</p>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() => openBarcode(product)}
+                            className="w-full flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 py-3 rounded-2xl text-green-600 font-medium transition"
+                        >
+                            <FaBarcode /> Generate Barcode
+                        </button>
+                    </div>
+                ))}
+            </div>
+
             {/* Barcode Modal */}
             {selectedProduct && (
-                <div className="fixed inset-0 backdrop-blur-sm bg-opacity-60 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 backdrop-blur-sm bg-black/60 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center">
                         <h2 className="text-2xl font-bold mb-6">{selectedProduct.name}</h2>
                         <div className="bg-gray-100 p-6 rounded-2xl mb-6 inline-block">
@@ -127,7 +166,7 @@ const ProductCatalog = () => {
                         <p className="text-gray-600 mb-6">SKU: {selectedProduct.sku}</p>
                         <button
                             onClick={() => setSelectedProduct(null)}
-                            className="bg-gray-800 text-white px-8 py-3 rounded-2xl hover:bg-gray-900"
+                            className="bg-gray-800 text-white px-8 py-3 rounded-2xl hover:bg-gray-900 w-full"
                         >
                             Close
                         </button>
