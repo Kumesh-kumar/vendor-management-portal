@@ -73,15 +73,30 @@ Bash: npm run both
 
 
 7.Project Structure
-textsrc/
-├── components/          # Reusable UI components
-├── layouts/             # AdminLayout & VendorLayout
+src/
+│
+├── api/
+├── assets/
+├── components/
+│   ├── common/
+│   ├── charts/
+│   └── layout/
+│
+├── context/
+├── hooks/
+├── layouts/
 ├── pages/
-│   ├── admin/           # Dashboard, Vendor Management, etc.
-│   ├── vendor/          # Vendor features
-│   └── auth/            # Login & Register
-├── redux/               # Redux store & slices
-├── routes/              # Routing configuration
-└── assets/
+│   ├── admin/
+│   ├── vendor/
+│   └── auth/
+│
+├── redux/
+├── routes/
+├── services/
+├── utils/
+│
+├── App.jsx
+├── main.jsx
+└── index.css
 
 
