@@ -1,0 +1,209 @@
+{
+  "admin": [
+    {
+      "id": "177814235614",
+      "role": "admin",
+      "name": "kumesh",
+      "city": "mohali",
+      "email": "admin@gmail.com",
+      "password": "123",
+      "mobile": "7878787878"
+    }
+  ],
+  "vendors": [
+    {
+      "id": "1778145675614",
+      "role": "vendor",
+      "name": "kumesh",
+      "city": "mohali",
+      "email": "kumesh@gmail.com",
+      "password": "123",
+      "mobile": "7878787878",
+      "status": "Approved",
+      "approvedDate": "2026-05-08T08:05:16.660Z"
+    },
+    {
+      "role": "vendor",
+      "name": "harman",
+      "email": "h@gmail.com",
+      "mobile": "7878787878",
+      "city": "moahli",
+      "password": "123456",
+      "status": "Approved",
+      "submittedDate": "2026-05-08T07:49:00.877Z",
+      "id": "f5ZuEKYlrPA",
+      "approvedDate": "2026-05-08T08:05:22.038Z"
+    },
+    {
+      "role": "vendor",
+      "name": "new",
+      "email": "new@gmail.com",
+      "mobile": "478596321745",
+      "city": "jalander",
+      "password": "123",
+      "status": "Approved",
+      "submittedDate": "2026-05-08T08:35:18.810Z",
+      "id": "peJdbzrp_OY",
+      "approvedDate": "2026-05-08T08:35:41.259Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Laptop",
+      "sku": "PROD001",
+      "category": "Electronics",
+      "price": 55000,
+      "stockStatus": "In Stock",
+      "brand": "Dell",
+      "quantity": 25,
+      "description": "Dell Inspiron laptop with Intel i5 processor",
+      "supplier": "ABC Suppliers",
+      "createdAt": "2026-05-08"
+    },
+    {
+      "id": "2",
+      "name": "Keyboard",
+      "sku": "PROD002",
+      "category": "Accessories",
+      "price": 1200,
+      "stockStatus": "Low Stock",
+      "brand": "Logitech",
+      "quantity": 8,
+      "description": "Wireless mechanical keyboard",
+      "supplier": "Tech World",
+      "createdAt": "2026-05-08"
+    },
+    {
+      "id": "3",
+      "name": "Mouse",
+      "sku": "PROD003",
+      "category": "Accessories",
+      "price": 800,
+      "stockStatus": "Out of Stock",
+      "brand": "HP",
+      "quantity": 0,
+      "description": "Wireless optical mouse",
+      "supplier": "Gadget Hub",
+      "createdAt": "2026-05-08"
+    },
+    {
+      "id": "4",
+      "name": "Monitor",
+      "sku": "PROD004",
+      "category": "Electronics",
+      "price": 15000,
+      "stockStatus": "In Stock",
+      "brand": "Samsung",
+      "quantity": 12,
+      "description": "24-inch Full HD monitor",
+      "supplier": "Display Center",
+      "createdAt": "2026-05-08"
+    }
+  ],
+  "purchaseOrders": [
+    {
+      "id": "1",
+      "poNumber": "PO-1001",
+      "items": 15,
+      "amount": 15000,
+      "deliveryDate": "2026-05-15",
+      "status": "Pending"
+    },
+    {
+      "id": "2",
+      "poNumber": "PO-1002",
+      "items": 8,
+      "amount": 28500,
+      "deliveryDate": "2026-05-10",
+      "status": "Accepted"
+    },
+    {
+      "id": "3",
+      "poNumber": "PO-1003",
+      "items": 22,
+      "amount": 42000,
+      "deliveryDate": "2026-05-08",
+      "status": "Fulfilled"
+    }
+  ],
+  "invoices": [
+    {
+      "id": "1778216919037",
+      "invoiceNumber": "INV-0930",
+      "poNumber": "PO-1002",
+      "amount": "1211",
+      "submittedDate": "2026-05-08",
+      "status": "Submitted",
+      "notes": ""
+    },
+    {
+      "invoiceNumber": "INV-952736",
+      "poNumber": "PO-1002",
+      "amount": 1400,
+      "submittedDate": "2026-05-08T08:12:46.372Z",
+      "status": "Submitted",
+      "notes": "this is just for example",
+      "vendor": "Current Vendor",
+      "id": "DTO5uoPU060"
+    },
+    {
+      "invoiceNumber": "INV-060602",
+      "poNumber": "PO-1003",
+      "amount": 2323,
+      "submittedDate": "2026-05-08T08:14:30.259Z",
+      "status": "Approved",
+      "notes": "tate",
+      "vendor": "Current Vendor",
+      "id": "5mt8H_AOewY",
+      "approvedDate": "2026-05-08T08:14:38.361Z"
+    }
+  ],
+  "shipments": [
+    {
+      "id": "1778216276287",
+      "shipmentId": "SHP-8066",
+      "poNumber": "PO-1002",
+      "trackingNumber": "fda",
+      "courier": "FedEx",
+      "dispatchDate": "2323-02-03",
+      "deliveryDate": "1212-01-04",
+      "status": "Pending",
+      "notes": ""
+    },
+    {
+      "id": "1",
+      "shipmentId": "SHP-8166",
+      "poNumber": "PO-1001",
+      "items": 15,
+      "amount": 15000,
+      "deliveryDate": "2026-05-15",
+      "status": "Pending",
+      "vendor": "ABC Suppliers",
+      "description": "Laptop Dell Inspiron + Accessories"
+    },
+    {
+      "id": "2",
+      "poNumber": "PO-1002",
+      "shipmentId": "SHP-8466",
+      "items": 8,
+      "amount": 28500,
+      "deliveryDate": "2026-05-10",
+      "status": "Accepted",
+      "vendor": "TechZone",
+      "description": "Office Furniture Set"
+    },
+    {
+      "id": "3",
+      "poNumber": "PO-1003",
+      "shipmentId": "SHP-7066",
+      "items": 22,
+      "amount": 42000,
+      "deliveryDate": "2026-05-08",
+      "status": "Fulfilled",
+      "vendor": "Global Traders",
+      "description": "Printers and Scanners"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

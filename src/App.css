@@ -1,0 +1,8 @@
+.wrapper {
+  min-height: 96svh;
+  width: 100%;
+}
+
+html {
+  height: 100%;
+}
