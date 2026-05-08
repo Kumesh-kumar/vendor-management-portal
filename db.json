@@ -6,7 +6,7 @@
       "name": "kumesh",
       "city": "mohali",
       "email": "admin@gmail.com",
-      "password": "123",
+      "password": "admin123",
       "mobile": "7878787878"
     }
   ],
@@ -16,8 +16,8 @@
       "role": "vendor",
       "name": "kumesh",
       "city": "mohali",
-      "email": "kumesh@gmail.com",
-      "password": "123",
+      "email": "vendor@gmail.com",
+      "password": "vendor123",
       "mobile": "7878787878",
       "status": "Approved",
       "approvedDate": "2026-05-08T08:05:16.660Z"
