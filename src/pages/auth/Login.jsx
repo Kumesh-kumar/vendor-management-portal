@@ -3,9 +3,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../../redux/authSlice';
-import { fetchVendors, fetchAdmins } from '../../redux/slices/vendorSlice'; // Import both
+import { fetchVendors } from '../../redux/slices/vendorSlice'; // Import both
 import axios from 'axios';
 import { setItem } from '../../utils/Storage';
+import { fetchAdmins } from '../../redux/slices/adminSlice';
 
 const Login = () => {
     const navigate = useNavigate();
