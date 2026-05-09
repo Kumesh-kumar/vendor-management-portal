@@ -1,31 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaPlus } from 'react-icons/fa';
+import axios from 'axios';
 import { ApiEndpoints } from '../../api/ApiURLs';
+// You can create a purchaseOrderSlice later if needed. For now using direct fetch with refresh.
 
 const PurchaseOrders = () => {
-    const [purchaseOrders, setPurchaseOrders] = useState([]);
-    const [filteredOrders, setFilteredOrders] = useState([]);
+    const [purchaseOrders, setPurchaseOrders] = React.useState([]);
+    const [filteredOrders, setFilteredOrders] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
 
-    // Fetch Purchase Orders
+    const fetchOrders = async () => {
+        try {
+            setLoading(true);
+            const res = await axios.get(ApiEndpoints.fetchOrders);
+            const data = res.data || [];
+            setPurchaseOrders(data);
+            setFilteredOrders(data);
+        } catch (err) {
+            console.error("Error fetching purchase orders:", err);
+            const sampleData = [
+                { id: 1, poNumber: "PO-1001", vendor: "Acme Corp", items: 15, amount: 15000, deliveryDate: "2026-05-15", status: "Active" },
+                { id: 2, poNumber: "PO-1002", vendor: "Global Supplies", items: 8, amount: 28500, deliveryDate: "2026-05-20", status: "Pending" },
+                { id: 3, poNumber: "PO-1003", vendor: "Tech Solutions", items: 22, amount: 42000, deliveryDate: "2026-05-10", status: "Completed" },
+            ];
+            setPurchaseOrders(sampleData);
+            setFilteredOrders(sampleData);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const res = await axios.get(ApiEndpoints.fetchOrders);
-                setPurchaseOrders(res.data);
-                setFilteredOrders(res.data);
-            } catch (err) {
-                console.error("Error fetching purchase orders:", err);
-                const sampleData = [
-                    { id: 1, poNumber: "PO-1001", vendor: "Acme Corp", items: 15, amount: 15000, deliveryDate: "2026-05-15", status: "Active" },
-                    { id: 2, poNumber: "PO-1002", vendor: "Global Supplies", items: 8, amount: 28500, deliveryDate: "2026-05-20", status: "Pending" },
-                    { id: 3, poNumber: "PO-1003", vendor: "Tech Solutions", items: 22, amount: 42000, deliveryDate: "2026-05-10", status: "Completed" },
-                    { id: 4, poNumber: "PO-1004", vendor: "Premium Goods", items: 12, amount: 19800, deliveryDate: "2026-05-18", status: "Active" },
-                ];
-                setPurchaseOrders(sampleData);
-                setFilteredOrders(sampleData);
-            }
-        };
         fetchOrders();
     }, []);
 
@@ -36,15 +42,19 @@ const PurchaseOrders = () => {
         return "bg-gray-100 text-gray-700";
     };
 
+    if (loading) return <div className="text-center py-10">Loading purchase orders...</div>;
+
     return (
         <div className="space-y-6">
-            {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900">Purchase Orders</h1>
                     <p className="text-gray-600">Create and manage purchase orders</p>
                 </div>
-                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl flex items-center gap-2 font-medium transition w-full sm:w-auto justify-center">
+                <button
+                    onClick={() => {/* Add Create PO Modal Logic Here */ }}
+                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl flex items-center gap-2 font-medium transition w-full sm:w-auto justify-center"
+                >
                     <FaPlus /> Create PO
                 </button>
             </div>
@@ -79,7 +89,7 @@ const PurchaseOrders = () => {
                                     </td>
                                     <td className="p-6">
                                         <button className="text-green-600 hover:text-green-700 font-medium hover:underline">
-                                            View
+                                            View Details
                                         </button>
                                     </td>
                                 </tr>

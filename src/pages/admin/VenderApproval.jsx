@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchVendors } from '../../redux/slices/vendorSlice';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { FaCheckCircle, FaTimesCircle, FaEye } from 'react-icons/fa';
 import { ApiEndpoints } from '../../api/ApiURLs';
 
 const VendorApproval = () => {
-    const [pendingVendors, setPendingVendors] = useState([]);
+    const dispatch = useDispatch();
+    const { list: vendors, loading } = useSelector(state => state.vendors);
+
     const [selectedVendor, setSelectedVendor] = useState(null);
     const [rejectReason, setRejectReason] = useState('');
     const [showRejectModal, setShowRejectModal] = useState(false);
 
-    const loadPendingVendors = async () => {
-        try {
-            const res = await axios.get(ApiEndpoints.fetchVendors);
-            const pending = res.data.filter(v => v.status === 'Pending' || !v.status);
-            setPendingVendors(pending);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
+    // Fetch vendors only if not already loaded
     useEffect(() => {
-        loadPendingVendors();
-    }, []);
+        if (vendors.length === 0) {
+            dispatch(fetchVendors());
+        }
+    }, [dispatch, vendors.length]);
+
+    const pendingVendors = vendors.filter(v => v.status === 'Pending' || !v.status);
 
     const approveVendor = async (vendor) => {
         try {
@@ -30,17 +29,15 @@ const VendorApproval = () => {
                 status: "Approved",
                 approvedDate: new Date().toISOString()
             });
-
-            toast.success(`Vendor "${vendor.name}" has been Approved!`);
-            loadPendingVendors();
-            setSelectedVendor(null);
+            toast.success(`Vendor "${vendor.name}" Approved!`);
+            dispatch(fetchVendors()); // Refresh list
         } catch (err) {
-            toast.error("Failed to approve");
+            toast.error("Failed to approve vendor");
         }
     };
 
     const rejectVendor = async () => {
-        if (!rejectReason) {
+        if (!rejectReason.trim()) {
             toast.error("Please enter rejection reason");
             return;
         }
@@ -51,16 +48,17 @@ const VendorApproval = () => {
                 rejectedDate: new Date().toISOString(),
                 rejectReason
             });
-
-            toast.error(`Vendor "${selectedVendor.name}" rejected`);
+            toast.success(`Vendor "${selectedVendor.name}" Rejected`);
             setShowRejectModal(false);
             setRejectReason('');
             setSelectedVendor(null);
-            loadPendingVendors();
+            dispatch(fetchVendors());
         } catch (err) {
-            toast.error("Failed to reject");
+            toast.error("Failed to reject vendor");
         }
     };
+
+    if (loading) return <div className="text-center py-10">Loading pending vendors...</div>;
 
     return (
         <div className="space-y-6">
@@ -99,7 +97,7 @@ const VendorApproval = () => {
                                         <td className="p-5">{vendor.email}</td>
                                         <td className="p-5">{vendor.mobile}</td>
                                         <td className="p-5 text-sm text-gray-500">
-                                            {new Date(vendor.submittedDate).toLocaleDateString()}
+                                            {new Date(vendor.submittedDate || Date.now()).toLocaleDateString()}
                                         </td>
                                         <td className="p-5">
                                             <div className="flex gap-3 justify-center">
@@ -109,7 +107,10 @@ const VendorApproval = () => {
                                                 <button onClick={() => approveVendor(vendor)} className="text-green-600 hover:text-green-700">
                                                     <FaCheckCircle size={22} />
                                                 </button>
-                                                <button onClick={() => { setSelectedVendor(vendor); setShowRejectModal(true); }} className="text-red-600 hover:text-red-700">
+                                                <button
+                                                    onClick={() => { setSelectedVendor(vendor); setShowRejectModal(true); }}
+                                                    className="text-red-600 hover:text-red-700"
+                                                >
                                                     <FaTimesCircle size={22} />
                                                 </button>
                                             </div>
@@ -129,9 +130,7 @@ const VendorApproval = () => {
                                         <p className="text-sm text-gray-500">Vendor Name</p>
                                         <p className="font-semibold text-lg">{vendor.name}</p>
                                     </div>
-                                    <span className="px-4 py-1 bg-yellow-100 text-yellow-700 text-sm rounded-full font-medium">
-                                        Pending
-                                    </span>
+                                    <span className="px-4 py-1 bg-yellow-100 text-yellow-700 text-sm rounded-full font-medium">Pending</span>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 text-sm">
@@ -145,11 +144,6 @@ const VendorApproval = () => {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <p className="text-gray-500">Submitted</p>
-                                    <p className="font-medium">{new Date(vendor.submittedDate).toLocaleDateString()}</p>
-                                </div>
-
                                 <div className="flex gap-3 pt-2">
                                     <button onClick={() => setSelectedVendor(vendor)} className="flex-1 py-3 border rounded-2xl text-blue-600 hover:bg-blue-50">
                                         <FaEye className="inline mr-2" /> View
@@ -157,7 +151,10 @@ const VendorApproval = () => {
                                     <button onClick={() => approveVendor(vendor)} className="flex-1 py-3 bg-green-600 text-white rounded-2xl hover:bg-green-700">
                                         Approve
                                     </button>
-                                    <button onClick={() => { setSelectedVendor(vendor); setShowRejectModal(true); }} className="flex-1 py-3 bg-red-600 text-white rounded-2xl hover:bg-red-700">
+                                    <button
+                                        onClick={() => { setSelectedVendor(vendor); setShowRejectModal(true); }}
+                                        className="flex-1 py-3 bg-red-600 text-white rounded-2xl hover:bg-red-700"
+                                    >
                                         Reject
                                     </button>
                                 </div>
@@ -180,7 +177,7 @@ const VendorApproval = () => {
                             placeholder="Reason for rejection..."
                         />
                         <div className="flex gap-4 mt-6">
-                            <button onClick={() => setShowRejectModal(false)} className="flex-1 py-3 border rounded-2xl">Cancel</button>
+                            <button onClick={() => { setShowRejectModal(false); setRejectReason(''); }} className="flex-1 py-3 border rounded-2xl">Cancel</button>
                             <button onClick={rejectVendor} className="flex-1 bg-red-600 text-white py-3 rounded-2xl">Confirm Reject</button>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-hot-toast';
+import axios from 'axios';
 import { FaCheckCircle, FaTimesCircle, FaEye } from 'react-icons/fa';
 import { ApiEndpoints } from '../../api/ApiURLs';
 
@@ -9,13 +10,18 @@ const InvoiceApproval = () => {
     const [selectedInvoice, setSelectedInvoice] = useState(null);
     const [rejectReason, setRejectReason] = useState('');
     const [showRejectModal, setShowRejectModal] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const fetchInvoices = async () => {
         try {
+            setLoading(true);
             const res = await axios.get(ApiEndpoints.fetchInvoices);
             setInvoices(res.data || []);
         } catch (err) {
             console.error(err);
+            setInvoices([]);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -33,7 +39,7 @@ const InvoiceApproval = () => {
             fetchInvoices();
             setSelectedInvoice(null);
         } catch (err) {
-            toast.error("Failed to approve");
+            toast.error("Failed to approve invoice");
         }
     };
 
@@ -55,9 +61,11 @@ const InvoiceApproval = () => {
             setSelectedInvoice(null);
             fetchInvoices();
         } catch (err) {
-            toast.error("Failed to reject");
+            toast.error("Failed to reject invoice");
         }
     };
+
+    if (loading) return <div className="text-center py-10">Loading invoices...</div>;
 
     return (
         <div className="space-y-6">
@@ -85,9 +93,7 @@ const InvoiceApproval = () => {
                                 <td className="p-5">{new Date(invoice.submittedDate).toLocaleDateString()}</td>
                                 <td className="p-5">
                                     <span className={`px-4 py-1 rounded-full text-sm ${invoice.status === 'Approved' ? 'bg-green-100 text-green-700' :
-                                        invoice.status === 'Rejected' ? 'bg-red-100 text-red-700' :
-                                            'bg-yellow-100 text-yellow-700'
-                                        }`}>
+                                        invoice.status === 'Rejected' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>
                                         {invoice.status || 'Submitted'}
                                     </span>
                                 </td>
@@ -101,10 +107,7 @@ const InvoiceApproval = () => {
                                                 <button onClick={() => approveInvoice(invoice)} className="text-green-600 hover:text-green-700">
                                                     <FaCheckCircle size={22} />
                                                 </button>
-                                                <button
-                                                    onClick={() => { setSelectedInvoice(invoice); setShowRejectModal(true); }}
-                                                    className="text-red-600 hover:text-red-700"
-                                                >
+                                                <button onClick={() => { setSelectedInvoice(invoice); setShowRejectModal(true); }} className="text-red-600 hover:text-red-700">
                                                     <FaTimesCircle size={22} />
                                                 </button>
                                             </>
@@ -127,9 +130,7 @@ const InvoiceApproval = () => {
                                 <p className="text-gray-500">PO: {invoice.poNumber}</p>
                             </div>
                             <span className={`px-3 py-1 rounded-full text-sm ${invoice.status === 'Approved' ? 'bg-green-100 text-green-700' :
-                                invoice.status === 'Rejected' ? 'bg-red-100 text-red-700' :
-                                    'bg-yellow-100 text-yellow-700'
-                                }`}>
+                                invoice.status === 'Rejected' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>
                                 {invoice.status || 'Submitted'}
                             </span>
                         </div>
@@ -147,16 +148,10 @@ const InvoiceApproval = () => {
 
                         {invoice.status !== 'Approved' && invoice.status !== 'Rejected' && (
                             <div className="flex gap-3 pt-2">
-                                <button
-                                    onClick={() => approveInvoice(invoice)}
-                                    className="flex-1 bg-green-600 text-white py-3 rounded-2xl flex items-center justify-center gap-2"
-                                >
+                                <button onClick={() => approveInvoice(invoice)} className="flex-1 bg-green-600 text-white py-3 rounded-2xl flex items-center justify-center gap-2">
                                     <FaCheckCircle /> Approve
                                 </button>
-                                <button
-                                    onClick={() => { setSelectedInvoice(invoice); setShowRejectModal(true); }}
-                                    className="flex-1 bg-red-600 text-white py-3 rounded-2xl flex items-center justify-center gap-2"
-                                >
+                                <button onClick={() => { setSelectedInvoice(invoice); setShowRejectModal(true); }} className="flex-1 bg-red-600 text-white py-3 rounded-2xl flex items-center justify-center gap-2">
                                     <FaTimesCircle /> Reject
                                 </button>
                             </div>
@@ -178,18 +173,8 @@ const InvoiceApproval = () => {
                             placeholder="Reason for rejection..."
                         />
                         <div className="flex gap-4 mt-6">
-                            <button
-                                onClick={() => { setShowRejectModal(false); setRejectReason(''); }}
-                                className="flex-1 py-3 border rounded-2xl"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={rejectInvoice}
-                                className="flex-1 bg-red-600 text-white py-3 rounded-2xl"
-                            >
-                                Confirm Reject
-                            </button>
+                            <button onClick={() => { setShowRejectModal(false); setRejectReason(''); }} className="flex-1 py-3 border rounded-2xl">Cancel</button>
+                            <button onClick={rejectInvoice} className="flex-1 bg-red-600 text-white py-3 rounded-2xl">Confirm Reject</button>
                         </div>
                     </div>
                 </div>
