@@ -35,7 +35,7 @@ const VenderManagement = () => {
             </div>
 
             {/* Search & Filter */}
-            <div className="flex flex-col md:flex-row gap-4">
+            {/* <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative flex-1">
                     <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input
@@ -44,7 +44,7 @@ const VenderManagement = () => {
                         className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-green-500"
                     />
                 </div>
-            </div>
+            </div> */}
 
             {/* Desktop Table */}
             <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
